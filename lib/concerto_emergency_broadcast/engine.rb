@@ -7,7 +7,7 @@ module ConcertoEmergencyBroadcast
 
     def plugin_info(plugin_info_class)
       @plugin_info ||= plugin_info_class.new do
-        # add configuration options here
+        add_route("ems", ConcertoEmergencyBroadcast::Engine)
       end
     end
 
