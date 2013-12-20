@@ -1,9 +1,8 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Body:</strong>
-  <%= @alert.body %>
-</p>
-
-<%= link_to 'Edit', edit_alert_path(@alert) %> |
-<%= link_to 'Back', alerts_path %>
+<section class="viewblock">
+  <header class="viewblock-header">
+    <%= render :partial => "show_header" %>
+  </header>
+  <div class="viewblock-cont">
+    <%= render :partial => "show_body" %>
+  </div>
+</section>

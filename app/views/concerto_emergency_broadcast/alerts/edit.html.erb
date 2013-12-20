@@ -1,6 +1,14 @@
-<h1>Editing alert</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @alert %> |
-<%= link_to 'Back', alerts_path %>
+<section class="viewblock">
+  <header class="viewblock-header">
+    <div class="viewblock-header_right">
+      <div class="button-padding">
+        <%= link_to 'Show', @alert, :class => 'btn' %>
+        <%= link_to 'Back', alerts_path, :class => 'btn' %>
+      </div>
+    </div>
+    <h1 class="default-padding">Editing Emergency Broadcast Alert</h1>
+  </header>
+  <div class="viewblock-cont">
+    <%= render 'form' %>
+  </div>
+</section>

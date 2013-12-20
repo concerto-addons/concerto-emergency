@@ -2,7 +2,6 @@ require_dependency "concerto_emergency_broadcast/application_controller"
 
 module ConcertoEmergencyBroadcast
   class AlertsController < ApplicationController
-    before_action :set_alert, only: [:show, :edit, :update, :destroy]
 
     # GET /alerts
     def index
@@ -11,6 +10,7 @@ module ConcertoEmergencyBroadcast
 
     # GET /alerts/1
     def show
+      @alert = Alert.find(params[:id])
     end
 
     # GET /alerts/new
@@ -20,6 +20,7 @@ module ConcertoEmergencyBroadcast
 
     # GET /alerts/1/edit
     def edit
+      @alert = Alert.find(params[:id])
     end
 
     # POST /alerts
@@ -35,7 +36,8 @@ module ConcertoEmergencyBroadcast
 
     # PATCH/PUT /alerts/1
     def update
-      if @alert.update(alert_params)
+      @alert = Alert.find(params[:id])
+      if @alert.update_attributes(alert_params)
         redirect_to @alert, notice: 'Alert was successfully updated.'
       else
         render action: 'edit'
@@ -44,6 +46,7 @@ module ConcertoEmergencyBroadcast
 
     # DELETE /alerts/1
     def destroy
+      @alert = Alert.find(params[:id])
       @alert.destroy
       redirect_to alerts_url, notice: 'Alert was successfully destroyed.'
     end

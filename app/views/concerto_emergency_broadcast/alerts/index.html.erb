@@ -1,27 +1,31 @@
-<h1>Listing alerts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Body</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @alerts.each do |alert| %>
+<section class="viewblock">
+  <header class="viewblock-header">
+    <div class="viewblock-header_right">
+      <div class="button-padding">
+        <%= link_to 'New Alert', new_alert_path, :class => 'btn' %>
+      </div>
+    </div>
+    <h1 class="default-padding">Emergency Broadcast Alert Archive</h1>
+  </header>
+  <div class="viewblock-cont">
+    <table>
       <tr>
-        <td><%= alert.body %></td>
-        <td><%= link_to 'Show', alert %></td>
-        <td><%= link_to 'Edit', edit_alert_path(alert) %></td>
-        <td><%= link_to 'Destroy', alert, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Message</th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<br>
-
-<%= link_to 'New Alert', new_alert_path %>
+      <tbody>
+        <% @alerts.each do |alert| %>
+          <tr>
+            <td><%= alert.body %></td>
+            <td><%= link_to 'Show', alert %></td>
+            <td><%= link_to 'Edit', edit_alert_path(alert) %></td>
+            <td><%= link_to 'Destroy', alert, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>
