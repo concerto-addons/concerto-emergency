@@ -1,7 +1,3 @@
-ConcertoEmergencyBroadcast::Engine.routes.draw do
-
-  root :to => 'alerts#index'
-
-  resources :alerts
-
+Rails.application.routes.draw do 
+  resources :emergency_alerts, :controller => :contents, :except => [:index, :show], :path => "content"
 end

@@ -1,0 +1,14 @@
+<fieldset>
+  <legend><span><%= EmergencyAlert::DISPLAY_NAME %></span></legend>
+
+  <div class="row-fluid">
+    <%= form.fields_for :config do |config| %>
+    <div class="clearfix">
+      <%= config.label :alert, "Alert" %>
+      <div class="input">
+        <%= config.text_area :alert, :class => "word_count fillWidth", :rows => "5", :autofocus => true %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</fieldset>
