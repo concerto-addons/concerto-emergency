@@ -53,7 +53,7 @@ concerto.frontend.Content.EmergencyAlert.prototype.load_ = function() {
   console.log('Loading Emergency Alert ... ');
 
   goog.dom.removeChildren(this.div_);
-  var alert_fragment = goog.dom.htmlToDocumentFragment('<div style="border-style: none; background-color: red;">' + this.alert + '</div>');
+  var alert_fragment = goog.dom.htmlToDocumentFragment('<div style="background-color: red;">' + this.alert + '</div>');
   goog.dom.appendChild(this.div_, alert_fragment);
 
   this.div_ = concerto.frontend.Helpers.Autofit(this.div_, this.field_width_, 

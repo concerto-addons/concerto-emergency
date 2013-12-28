@@ -7,7 +7,7 @@ module ConcertoEmergencyBroadcast
 
     initializer "register content type" do |app|
       app.config.content_types << EmergencyAlert
-      app.config.content_types << EmergencyRSS
+      app.config.content_types << EmergencyRss
     end
 
     def plugin_info(plugin_info_class)
@@ -18,10 +18,9 @@ module ConcertoEmergencyBroadcast
         end
 
         add_controller_hook "ScreensController", :show, :before do
-          
         end
 
-        add_view_hook "ScreensController", :screen_details, :text => "hello"
+        add_view_hook "ScreensController", :screen_details, :text => ""
 
       end
     end
