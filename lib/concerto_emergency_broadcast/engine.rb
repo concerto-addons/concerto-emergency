@@ -27,28 +27,34 @@ module ConcertoEmergencyBroadcast
         # Controller hook for frontend/screens_controller#show
         add_controller_hook "Frontend::ScreensController", :setup, :before do
           # Check for active EmergencyAlert Content
-          emergency_contents = Submission.joins(:content).where(:submissions => {:moderation_flag => true}, :contents => {:type => 'EmergencyAlert'})
+          emergency_feed = Feed.find_by_name("Emergency Alerts")
           
           # EmergencyAlert content is present, override the screen
-          if not emergency_contents.empty?
-            # Find our emergenct template
-            emergency_template = Template.find_by_name('Emergency Template')
-
-            # emergency template not found in database
-            if emergency_template.id.nil?
-              # create a new one?
-            end
+          if not emergency_feed.submissions.where(:moderation_flag => true).empty?
 
             # Since an emergency alert was detected, make a copy of the 
             # requested screen and modify the setup to display the alerts
-            emergency_screen = @screen
+            emergency_screen = @screen.dup
+            emergency_screen.id = @screen.id
+
+            # Find and set our emergency template
+            emergency_template = Template.find_by_name("Emergency Template")
             emergency_screen.template_id = emergency_template.id
 
+            # Find and Add a graphics field
+            graphics_field = Field.find_by_name("Graphics")
+            emergency_screen.fields << graphics_field
+
+            # Subscribe the Emergency Alerts Feed to the graphics field
+            emergency_screen.fields[0].subscriptions.clear
+            emergency_screen.fields[0].subscriptions << Subscription.new(:feed_id => emergency_feed.id,
+              :field_id => graphics_field.id, :screen_id => @screen.id, :weight => 1, :id => Subscription.last.id + 1)
 
             # Override the screen variable that the 
             # Frontend::ScreensController will respond with 
             @screen = emergency_screen
           end
+
         end
 
       end
