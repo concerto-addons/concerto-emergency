@@ -37,13 +37,19 @@ module ConcertoEmergencyBroadcast
             emergency_screen = @screen.dup
             emergency_screen.id = @screen.id
 
-            # Find and set our emergency template
-            emergency_template = Template.find_by_name("Emergency Template")
-            emergency_screen.template_id = emergency_template.id
-
             # Find and Add a graphics field
             graphics_field = Field.find_by_name("Graphics")
             emergency_screen.fields << graphics_field
+
+            # Find and set our emergency template
+            emergency_template = Template.find_by_name("Emergency Template")
+            if emergency_template.nil? 
+              emergency_template = Template.create(:name => "Emergency Template", :author => "EmergencyPlugin", :is_hidden => true)
+              emergency_template.positions << Position.create(:top => 0.0, :left => 0.0, :right => 1.0, :bottom => 1.0, 
+                :field_id => graphics_field.id, :template_id => emergency_template.id, :style => 'background-color: #FF0000')
+            end
+
+            emergency_screen.template_id = emergency_template.id
 
             # Subscribe the Emergency Alerts Feed to the graphics field
             emergency_screen.fields[0].subscriptions.clear
