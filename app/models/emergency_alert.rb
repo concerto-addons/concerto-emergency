@@ -6,7 +6,7 @@ class EmergencyAlert < Content
   after_find :load_config
 
   before_validation :save_config
-  before_save :convert_textile
+  before_save :process_markdown
 
   attr_accessor :config
 
@@ -40,9 +40,14 @@ class EmergencyAlert < Content
     self.config['alert'] = self.class.clean_html(self.config['alert']) unless self.config['alert'].nil?
   end
 
-  def convert_textile 
-    self.config['alert'] = RedCloth.new(self.config['alert']).to_html
+  def process_markdown
+    self.config['alert'] = self.class.convert_markdown(self.config['alert'])
     sanitize_html
+  end
+
+  def self.convert_markdown(content)
+    md = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+    md.render(content)
   end
 
   def self.clean_html(html)

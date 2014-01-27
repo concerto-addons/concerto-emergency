@@ -1,0 +1,9 @@
+<%= form_for(@ems_config) do |f| %>
+  <fieldset>
+    <legend>
+      <span>SELECT FEED</span>
+    </legend>
+  </fieldset>
+  <%= render :partial => "feed_list" %>
+  <%= render :partial => "screens/template_selection", :locals => {:f => f} %>
+<% end %>
