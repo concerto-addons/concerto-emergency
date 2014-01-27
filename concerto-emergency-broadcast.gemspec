@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "Broadcast emergency alerts on Concerto screens."
   s.description = "Broadcast emergency alerts on Concerto screens."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.9"
