@@ -1,3 +1,30 @@
-<% @feeds.each do |feed| %>
-  <%=  %>
-<% end %>
+<fieldset>
+  <legend>
+    <span>SELECT FEED</span>
+  </legend>
+</fieldset>
+
+<% feeds = dfs_tree(Feed.roots) %>
+  <% if feeds.empty? %>
+    <p><%= t(:no_feeds) %></p>
+  <% else %>
+
+  <div class="tooltip-filter-cont">
+    <input type="text" class="feed_filter fillWidth" placeholder="Type here to filter" />
+  </div>
+
+<div class="default-padding">
+  <div class="tooltip-scrollY">
+    <ul class="filterable selector-list">
+      <% feeds.each_with_index do |feed, i| %>
+        <li data-filter="<%= feed.name %>">
+            <%= f.radio_button :feed_id, feed.id.to_s  %>
+            <%= ("&nbsp;" * feed.depth).html_safe %>
+            <b><%= feed.name %></b>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+
+</div>

@@ -1,9 +1,10 @@
 <%= form_for(@ems_config) do |f| %>
-  <fieldset>
-    <legend>
-      <span>SELECT FEED</span>
-    </legend>
-  </fieldset>
-  <%= render :partial => "feed_list" %>
+
   <%= render :partial => "screens/template_selection", :locals => {:f => f} %>
+  <%= render :partial => "feed_list", :locals => {:f => f} %>
+
+  <div class="submit_bar actions">
+    <%= f.submit :Save, :class => "btn btn-primary" %>
+    <%= link_to t(:cancel), ems.ems_config_index_path, :class => "btn" %>
+  </div>
 <% end %>

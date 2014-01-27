@@ -22,12 +22,12 @@ module ConcertoEmergencyBroadcast
         # Effective template hook 
         add_controller_hook "Screen", :effective_template, :after do
 
-          emergency_content = Content.where(:type => "EmergencyAlert")
+          emergency_feed = Feed.find(EmsConfig.first.feed_id)
 
           # Check for emergency content 
-          if not emergency_content.nil? and not emergency_content.empty?
+          if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.empty?
             # swap template to emergency template if emergency content is present
-            @template = Template.find_by_name("Emergency Template")
+            @template = Template.find(EmsConfig.first.template_id)
           end
 
         end
@@ -35,11 +35,15 @@ module ConcertoEmergencyBroadcast
         # Controller hook for frontend/contents_controller
         add_controller_hook "Frontend::ContentsController", :index, :before do
 
-          emergency_content = Content.where(:type => "EmergencyAlert")
+          emergency_feed = Feed.find(EmsConfig.first.feed_id)
           
-          if not emergency_content.nil? and not emergency_content.empty?
-            # Content supplied to screen is replaced with emergency contents
-            @content = emergency_content
+          if not emergency_feed.nil?
+            emergency_content = emergency_feed.approved_contents
+            
+            if not emergency_content.nil? and not emergency_content.empty?
+              # Content supplied to screen is replaced with emergency contents
+              @content = emergency_content
+            end
           end
 
         end
@@ -52,7 +56,10 @@ module ConcertoEmergencyBroadcast
           end
           @ems_config = EmsConfig.first
         end
+
+        # Screen#Show view hook for ems configuration
         add_view_hook "ScreensController", :screen_details, :partial => "concerto_emergency_broadcast/ems_config/screen_details"
+      
       end
     end
 
