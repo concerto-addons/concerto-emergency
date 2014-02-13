@@ -20,29 +20,31 @@ module ConcertoEmergencyBroadcast
         end
 
         # Effective template hook 
-        add_controller_hook "Screen", :effective_template, :after do
+        add_controller_hook "Screen", :frontend_display, :after do
 
           emergency_feed = Feed.find(EmsConfig.first.feed_id)
 
           # Check for emergency content 
           if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.empty?
             # swap template to emergency template if emergency content is present
-            @template = Template.find(EmsConfig.first.template_id)
+            self.template = Template.find(EmsConfig.first.template_id)
           end
 
         end
 
         # Controller hook for frontend/contents_controller
-        add_controller_hook "Frontend::ContentsController", :index, :before do
+        add_controller_hook "Frontend::ContentsController", :index, :after do
 
           emergency_feed = Feed.find(EmsConfig.first.feed_id)
           
           if not emergency_feed.nil?
-            emergency_content = emergency_feed.approved_contents
-            
-            if not emergency_content.nil? and not emergency_content.empty?
+            emergency_submissions = emergency_feed.submissions.approved.active
+            emergency_contents = Array.new()
+            emergency_submissions.each { |submission| emergency_contents << Content.find(submission.content_id) }
+        
+            if not emergency_contents.empty?
               # Content supplied to screen is replaced with emergency contents
-              @content = emergency_content
+              @content = emergency_contents
             end
           end
 
@@ -52,7 +54,7 @@ module ConcertoEmergencyBroadcast
         # the app crashed when I didn't have these added
         add_controller_hook "ScreensController", :show, :before do
           if EmsConfig.first.nil?
-            EmsConfig.create(:template_id => 0, :feed_id => 0)
+            EmsConfig.create(:template_id => 1, :feed_id => 1)
           end
           @ems_config = EmsConfig.first
         end
