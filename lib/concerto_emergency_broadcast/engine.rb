@@ -13,7 +13,16 @@ module ConcertoEmergencyBroadcast
     def plugin_info(plugin_info_class)
       @plugin_info ||= plugin_info_class.new do
 
-        add_route("ems", ConcertoEmergencyBroadcast::Engine)
+        # Add configuration options under Concerto Admin Settings
+        add_config("emergency_template", "Default Template",
+          :value_type => "string",
+          :category => "Emergency Alerts",
+          :description => "Template used to display emergency alerts")
+
+        add_config("emergency_feed", "Concerto",
+          :value_type => "string",
+          :category => "Emergency Alerts",
+          :description => "Feed monitored for eemergency alert content")
 
         init do 
           Rails.logger.info "ConcertoEmergencyBroadcast: Initialization code is running"
@@ -22,12 +31,12 @@ module ConcertoEmergencyBroadcast
         # Effective template hook 
         add_controller_hook "Screen", :frontend_display, :after do
 
-          emergency_feed = Feed.find(EmsConfig.first.feed_id)
+          emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
 
           # Check for emergency content 
           if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.empty?
             # swap template to emergency template if emergency content is present
-            self.template = Template.find(EmsConfig.first.template_id)
+            @template = Template.find_by_name(ConcertoConfig[:emergency_template])
           end
 
         end
@@ -35,7 +44,7 @@ module ConcertoEmergencyBroadcast
         # Controller hook for frontend/contents_controller
         add_controller_hook "Frontend::ContentsController", :index, :after do
 
-          emergency_feed = Feed.find(EmsConfig.first.feed_id)
+          emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
           
           if not emergency_feed.nil?
             emergency_submissions = emergency_feed.submissions.approved.active
@@ -47,21 +56,8 @@ module ConcertoEmergencyBroadcast
               @content = emergency_contents
             end
           end
-
         end
 
-        # Controller hook and view hook for Screen Show page
-        # the app crashed when I didn't have these added
-        add_controller_hook "ScreensController", :show, :before do
-          if EmsConfig.first.nil?
-            EmsConfig.create(:template_id => 1, :feed_id => 1)
-          end
-          @ems_config = EmsConfig.first
-        end
-
-        # Screen#Show view hook for ems configuration
-        add_view_hook "ScreensController", :screen_details, :partial => "concerto_emergency_broadcast/ems_config/screen_details"
-      
       end
     end
 
