@@ -1,7 +1,7 @@
-module ConcertoEmergencyBroadcast
+module ConcertoEmergency
   class Engine < ::Rails::Engine
 
-    isolate_namespace ConcertoEmergencyBroadcast
+    isolate_namespace ConcertoEmergency
 
     engine_name 'ems'
 

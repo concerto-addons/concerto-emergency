@@ -1,6 +1,6 @@
 require 'rails/generators'
 
-module ConcertoEmergencyBroadcast
+module ConcertoEmergency
   class InstallGenerator < Rails::Generators::Base
     source_root File.expand_path('../../../../', __FILE__)
 
