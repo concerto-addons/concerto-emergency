@@ -22,7 +22,7 @@ module ConcertoEmergency
         add_config("emergency_feed", "Concerto",
           :value_type => "string",
           :category => "Emergency Alerts",
-          :description => "Feed monitored for eemergency alert content")
+          :description => "Feed monitored for emergency alert content")
 
         init do 
           Rails.logger.info "ConcertoEmergencyBroadcast: Initialization code is running"
