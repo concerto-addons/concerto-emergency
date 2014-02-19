@@ -29,14 +29,18 @@ module ConcertoEmergency
         end
 
         # Effective template hook 
-        add_controller_hook "Screen", :frontend_display, :after do
+        add_controller_hook "Screen", :frontend_display, :before do
 
           emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
 
           # Check for emergency content 
           if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.empty?
+            
             # swap template to emergency template if emergency content is present
-            self.template = Template.find_by_name(ConcertoConfig[:emergency_template])
+            emergency_template = Template.find_by_name(ConcertoConfig[:emergency_template])
+            if not emergency_template.nil?
+              self.template = emergency_template
+            end
           end
 
         end
@@ -52,6 +56,14 @@ module ConcertoEmergency
             emergency_submissions.each { |submission| emergency_contents << Content.find(submission.content_id) }
         
             if not emergency_contents.empty?
+
+              # Change template identifier so the screen knows a template 
+              #  is used for emergency alerts
+              emergency_template = Template.find_by_name(ConcertoConfig[:emergency_template])
+              if not emergency_template.nil?
+                @screen.template = emergency_template
+              end
+              
               # Content supplied to screen is replaced with emergency contents
               @content = emergency_contents
             end
