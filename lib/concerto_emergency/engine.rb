@@ -29,7 +29,7 @@ module ConcertoEmergency
         end
 
         # Effective template hook 
-        add_controller_hook "Screen", :frontend_display, :before do
+        add_controller_hook "Screen", :frontend_display, :after do
 
           emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
 
