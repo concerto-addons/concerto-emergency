@@ -5,11 +5,6 @@ module ConcertoEmergency
 
     engine_name 'ems'
 
-    initializer "register content type" do |app|
-      app.config.content_types << EmergencyAlert
-      app.config.content_types << EmergencyRss
-    end
-
     def plugin_info(plugin_info_class)
       @plugin_info ||= plugin_info_class.new do
 
