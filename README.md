@@ -5,8 +5,8 @@ This plugin provides [Concerto Digital Signage](https://github.com/concerto/conc
 
 Instructions
 ------------
-1. Clone the repository, navigate to the Plugins page and add a new plugin using the filesystem path to concerto-emergency.
+1. Clone the repository, navigate to the plugins page and add a new plugin using the filesystem path to concerto-emergency.
 
-2. After running ```bundle install```, copy the plugin's frontend js files and recompile using ```./script/rails generate concerto_emergency:install install```
+2. Run ```bundle install```
 
 3. Plugin settings can be found under Admin > Settings > Emergency Alerts. The emergency template will replace the current template when emergency alerts are detected in the emergency feed. 
