@@ -5,7 +5,7 @@ require "concerto_emergency/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "concerto-emergency"
+  s.name        = "concerto_emergency"
   s.version     = ConcertoEmergency::VERSION
   s.authors     = "Concerto Team"
   s.email       = ["team@concerto-signage.org"]
