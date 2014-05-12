@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://concerto-signage.org"
   s.summary     = "Broadcast emergency alerts on Concerto screens."
   s.description = "Broadcast emergency alerts on Concerto screens."
-
+  s.license = "Apache-2.0"
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
