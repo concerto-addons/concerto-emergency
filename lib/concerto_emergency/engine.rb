@@ -46,7 +46,7 @@ module ConcertoEmergency
           emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
           
           if not emergency_feed.nil?
-            emergency_submissions = emergency_feed.submissions.approved.active
+            emergency_submissions = emergency_feed.submissions.approved.active.includes(:content).where("kind_id = ?", @field.kind_id)
             emergency_contents = Array.new()
             emergency_submissions.each { |submission| emergency_contents << Content.find(submission.content_id) }
         
