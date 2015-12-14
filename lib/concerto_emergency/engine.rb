@@ -27,9 +27,10 @@ module ConcertoEmergency
         add_controller_hook "Screen", :frontend_display, :before do
 
           emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
+          emergency_active = emergency_feed.submissions.approved.active.includes(:content).where("kind_id != 4").present?
 
           # Check for emergency content 
-          if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.includes(:content).where("kind_id != 4").empty?
+          if not emergency_feed.nil? and emergency_active
             # swap template to emergency template if emergency content is present
             emergency_template = Template.find_by_name(ConcertoConfig[:emergency_template])
             if not emergency_template.nil?
