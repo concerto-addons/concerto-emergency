@@ -29,8 +29,7 @@ module ConcertoEmergency
           emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
 
           # Check for emergency content 
-          if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.empty?
-            
+          if not emergency_feed.nil? and not emergency_feed.submissions.approved.active.includes(:content).where("kind_id != 4").empty?
             # swap template to emergency template if emergency content is present
             emergency_template = Template.find_by_name(ConcertoConfig[:emergency_template])
             if not emergency_template.nil?
@@ -44,13 +43,14 @@ module ConcertoEmergency
         add_controller_hook "Frontend::ContentsController", :index, :after do
 
           emergency_feed = Feed.find_by_name(ConcertoConfig[:emergency_feed])
+          emergency_active = emergency_feed.submissions.approved.active.includes(:content).where("kind_id != 4").present?
           
           if not emergency_feed.nil?
             emergency_submissions = emergency_feed.submissions.approved.active.includes(:content).where("kind_id = ?", @field.kind_id)
             emergency_contents = Array.new()
             emergency_submissions.each { |submission| emergency_contents << Content.find(submission.content_id) }
         
-            if not emergency_contents.empty?
+            if emergency_active
 
               # Change template identifier so the screen knows a template 
               #  is used for emergency alerts
@@ -62,6 +62,8 @@ module ConcertoEmergency
               # Content supplied to screen is replaced with emergency contents
               @content = emergency_contents
             end
+          else
+            Rails.logger.error("could not find emergency feed #{ConcertoConfig[:emergency_feed]}")
           end
         end
 
